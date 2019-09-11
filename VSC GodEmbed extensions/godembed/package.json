@@ -1,0 +1,25 @@
+{
+    "name": "godembed",
+    "displayName": "GodEmbed Syntactic Support",
+    "description": "Discord embed friendly markup langage.",
+    "version": "0.0.1",
+    "engines": {
+        "vscode": "^1.38.0"
+    },
+    "categories": [
+        "Programming Languages"
+    ],
+    "contributes": {
+        "languages": [{
+            "id": "godembed",
+            "aliases": ["GodEmbed", "godembed"],
+            "extensions": [".ge"],
+            "configuration": "./language-configuration.json"
+        }],
+        "grammars": [{
+            "language": "godembed",
+            "scopeName": "source.godembed",
+            "path": "./syntaxes/godembed.tmLanguage.json"
+        }]
+    }
+}

@@ -1,0 +1,41 @@
+{
+	"$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
+	"name": "GodEmbed",
+	"patterns": [
+		{
+			"include": "#keywords"
+		},
+		{
+			"include": "#strings"
+		},
+		{
+			"include": "#props"
+		}
+	],
+	"repository": {
+		"keywords": {
+			"patterns": [{
+				"name": "keyword.godembed",
+				"match": "\\b\\-(img|url|inline)\\b"
+			}]
+		},
+		"props": {
+			"patterns": [{
+				"name": "prop.godembed",
+				"match": "\\b\\$(author|title|logo|image|url|description|color|timestamp|field|footer|end)\\b"
+			}]
+		},
+		"strings": {
+			"name": "string.godembed",
+			"begin": "\\b\\-(img|url)\\b",
+			"end": "\n",
+			"patterns": [
+				{
+					"name": "constant.character.escape.godembed",
+					"match": "\\\\."
+				}
+			]
+		}
+	},
+	"scopeName": "source.godembed"
+}

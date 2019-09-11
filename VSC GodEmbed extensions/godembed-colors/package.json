@@ -1,0 +1,21 @@
+{
+    "name": "godembed-colors",
+    "displayName": "GodEmbed Syntactic Color",
+    "description": "Color syntax of GodEmbed langage",
+    "version": "0.0.1",
+    "engines": {
+        "vscode": "^1.38.0"
+    },
+    "categories": [
+        "Themes"
+    ],
+    "contributes": {
+        "themes": [
+            {
+                "label": "GodEmbed Syntactic Color",
+                "uiTheme": "vs-dark",
+                "path": "./themes/GodEmbed Syntactic Color-color-theme.json"
+            }
+        ]
+    }
+}

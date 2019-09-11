@@ -1,0 +1,32 @@
+{
+    "comments": {},
+    // symbols used as brackets
+    "brackets": [
+        ["$", "$end"]
+    ],
+    // symbols that are auto closed when typing
+    "autoClosingPairs": [
+        ["$author","\n\t\n$end"],
+        ["$title","$end"],
+        ["$logo","$end"],
+        ["$image","$end"],
+        ["$url","$end"],
+        ["$description","$end"],
+        ["$color","$end"],
+        ["$timestamp","$end"],
+        ["$field","\n\t\n$end"],
+        ["$footer","\n\t\n$end"],
+        ["\"","\""],
+        ["(", ")"],
+        ["{", "}"],
+        ["[", "]"]
+    ],
+    // symbols that that can be used to surround a selection
+    "surroundingPairs": [
+        ["{", "}"],
+        ["[", "]"],
+        ["(", ")"],
+        ["\"", "\""],
+        ["'", "'"]
+    ]
+}

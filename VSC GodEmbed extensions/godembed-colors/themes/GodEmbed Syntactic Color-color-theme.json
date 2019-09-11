@@ -1,0 +1,41 @@
+{
+	"name": "GodEmbed Syntactic Color",
+	"type": "dark",
+	"colors": {
+		"editor.background": "#263238",
+		"editor.foreground": "#eeffff",
+		"activityBarBadge.background": "#007acc",
+		"sideBarTitle.foreground": "#bbbbbb"
+	},
+	"tokenColors": [
+		{
+			"name": "Keywords",
+			"scope": [
+				"keyword",
+				"keyword.godembed"
+			],
+			"settings": {
+				"foreground": "#00ccff"
+			}
+		},
+		{
+			"name": "Properties",
+			"scope": [
+				"prop",
+				"prop.godembed"
+			],
+			"settings": {
+				"foreground": "#ab1bff"
+			}
+		},
+		{
+			"name": "String",
+			"scope": [
+				"string.godembed"
+			],
+			"settings": {
+				"foreground": "#ff75ba"
+			}
+		}
+	]
+}
