@@ -28,82 +28,109 @@ You can use Discord to test this module by doing the following :
 
 ```js
 const godEmbed = require("godembed")
-const {Client,RichEmbed} = require("discord.js")
 
-client.on("message", message => {
-    if(message.content && message.channel){
-        const {embed,logs} = toEmbed(message.content)
-        message.channel.send({
-            content : "GodEmbed logs```\n"+logs+"\n```",
-            embed : embed
-        })
+client.on( "message", message => {
+
+    if( !message.system && message.channel ) return
+
+    if( message.content.startsWith( 'godembed' ) ){
+
+        const input = message.content.replace( 'godembed', '' )
+
+        const { output, errors } = toEmbed( input )
+
+        message.channel.send( errors.length > 0 ? errors.join('\n') : 'it works !' )
+        message.channel.send( output )
     }
 })
 ```
 
 ## Use GodEmbed langage
 
-All parts of a RichEmbed are definable from the GodEmbed language. 
+All parts of a RichEmbed are definable from the GodEmbed language.  
 
-### Example
-
-When you type :
+### Documentation / Usage / Example
 
 ```
-$author Ghom Krosmonaute  
--img https://cdn.discordapp.com/embed/avatars/0.png  
--url https://discordapp.com  
-$end  
-```
+    Hey ! I'm a COMMENT in GodEmbed file (file.ge) because 
+    I'm not between an opening tag and a closing tag \o/ 
+    (my indentation is conventional)
 
-> The "end" are not mandatory but strongly recommended, notament to be able to comment between two elements.
+    The "author" tag takes three arguments, two of which is optional :
 
-```
+        $author_tag author_name
+        [image_url]
+        [onclic_url]
+        [$end_tag]
+
+    Like this :
+
+$author Ghom Krosmonaute 
+https://cdn.discordapp.com/embed/avatars/0.png  
+https://discordapp.com  
+$end 
+
+    The "end" tags are not mandatory but notament 
+    recommended to be able to comment between two elements.
+
+    As for example for this title :
+
 $title Voici le titre !
 
-$logo https://cdn.discordapp.com/embed/avatars/0.png
-
+$thumbnail https://cdn.discordapp.com/embed/avatars/0.png
 $image https://cdn.discordapp.com/embed/avatars/0.png
+$url https://discordapp.com $end
 
-$url https://discordapp.com
+    As you can see, the requested arguments are 
+    the same as for the RichEmbed constructor.
+    (excluding attachments anyway)
+
+    Unlike the "author" tag, the "description" tag only 
+    takes a single argument of several lines.
 
 $description 
 Et biensûr la description qui comme 
 le titre peut faire plusieur lignes !
 $end 
 
+    Sorry for the french content but I'm french so...
+
+    Colors can only be given in hexadecimal.
+    (Number form or hash String form)
+
+$color #FF0000
 $color 0xFF0000 $end
-```
 
-> Colors can only be given in hexadecimal and only in the Number form.  
+    The timestamp can be defined by a Unix timestamp 
+    or with a date recognized by Moment.js but 
+    it can also be defined with "now" as above.
 
-```
-$timestamp now $end 
-```
+$timestamp now
 
-> The timestamp can be defined by a <timestamp> but it can also be defined with "now" as above.
+    Here is the structure of a field :
 
-```
+        $field_tag field_name
+        multi_lines_text
+        [$inline_tag]
+        [$end_tag]
+
 $field Titre du premier field
 Texte du premier field
--inline
-$end
+$inline
 
 $field Titre du second field 
 Texte du second field
 $end
 
+    At the end of the file, it is optional to add an "end" tag 
+    because it is added automatically by the GodEmbed module.
+
 $footer Texte du footer 
--img https://cdn.discordapp.com/embed/avatars/0.png
-$end
+https://cdn.discordapp.com/embed/avatars/0.png
 ```
 
-You obtain :
+### This code gives that
 
 ![Result](https://cdn.discordapp.com/attachments/609313381421154304/619976933383602214/unknown.png)
 
-## Join Discord server support 😄
-
-<iframe src="https://discordapp.com/widget?id=507389389098188820&theme=dark" width="350" height="500" allowtransparency="true" frameborder="0"></iframe>
-
-![[Join Discord server support](https://www.google.com/url?sa=i&rct=j&q=&esrc=s&source=images&cd=&ved=2ahUKEwjVt8S7tr_kAhVEhxoKHQAHCAIQjRx6BAgBEAQ&url=https%3A%2F%2Fwww.iconfinder.com%2Ficons%2F2308078%2Fdiscord_logo_website_icon&psig=AOvVaw0UYg4lQ6Hne681Mu9svv_l&ust=1567970234342338)](https://discord.gg/7VEq4DE)
+![## Join Discord server support 😄](https://discord.gg/3vC2XWK)

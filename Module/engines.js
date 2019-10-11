@@ -1,83 +1,80 @@
 
+const moment = require('moment')
 
-const large = e => e.length > 0 && e.length <= 2048
-const small = e => e.length > 0 && e.length <= 256
-const number = e => e ? !isNaN(e) : true
-const first = match => match[0] ? match[0][1].trim() : ""
-const URL = e => {
-    const regexURL = new RegExp('(https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|www\.[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9]+\.[^\s]{2,}|www\.[a-zA-Z0-9]+\.[^\s]{2,})',"i") // (?:https?:\/\/)?(?:[\S]+?\.)?[\S]+?\.[\S]+(?:\.[\S]+)?
-    return large(e) && regexURL.test(e)
+// Moteur de test et de conversion des arguments
+const processors = {
+    'inline' : arg => /\$inline/i.test(arg),
+    'url' : arg => /(https?:\/\/(?:www\.|(?!www))[a-z\d][a-z\d-]+[a-z\d]\.[^\s]{2,}|www\.[a-z\d][a-z\d-]+[a-z\d]\.[^\s]{2,}|https?:\/\/(?:www\.|(?!www))[a-z\d]+\.[^\s]{2,}|www\.[a-z\d]+\.[^\s]{2,})/i.test(arg) ? arg : false,
+    'img' : arg => /\S+\.(?:jpg|jpeg|gif|png|bmp|webp)/i.test(arg) ? arg : false,
+    '2048' : arg => arg.length > 0 && arg.length <= 2048 ? arg : false,
+    '1024' : arg => arg.length > 0 && arg.length <= 1024 ? arg : false,
+    '256' : arg => arg.length > 0 && arg.length <= 256 ? arg : false,
+    'date' : arg => /now/i.test(arg) ? Date.now() : moment(arg).isValid() ? moment(arg).valueOf() : Date.now(),
+    'color' : arg => /(?:(?:0x){0,1}|#{0,1})(?:[0-9A-F]{8}|[0-9A-F]{6})/i.test(arg) ? arg.startsWith('#') ? arg : Number(arg) : false
 }
 
-module.exports = {
-    title : {
-        regex : /\$title([\W\w]+?)\n?\$(?:end)?/gm,
-        toJSON : first,
-        filter : small
+// TODO: moteurs d'isolation d'un élément en partant de la fin de l'input
+const isolations = {
+    'inline' : input => null,
+    'url' : input => null,
+    'img' : input => null,
+    '2048' : input => null,
+    '1024' : input => null,
+    '256' : input => null,
+    'date' : input => null,
+    'color' : input => null
+}
+
+// Règlement des balises
+const tags = {
+    'title' : {
+        args : ['256'],
+        method : 'setTitle'
     },
-    description : {
-        regex : /\$(?:description|desc)([\W\w]+?)\$(?:end)?/gm,
-        toJSON : first,
-        filter : large
+    'author' : {
+        args : ['256','?img','?url'],
+        method : 'setAuthor'
     },
-    url : {
-        regex : /\$(?:url|link)([\W\w]+?)\$(?:end)?/gm,
-        toJSON : first,
-        filter : URL
+    'description' : {
+        args : ['2048'],
+        method : 'setDescription'
     },
-    color : {
-        regex : /\$color([\W\w]+?)\$(?:end)?/gm,
-        toJSON : match => Number(first(match)) || null,
-        filter : number
+    'footer' : {
+        args : ['2048','?img'],
+        method : 'setFooter'
     },
-    timestamp : {
-        regex : /\$(?:timestamp|time)([\W\w]+?)\$(?:end)?/gm,
-        toJSON : match => first(match).toLowerCase().includes("now") ? Date.now() : Number(first(match)),
-        filter : e => (new Date(e)).toString() != "Invalid Date"
+    'url' : {
+        args : ['url'],
+        method : 'setURL'
     },
-    footer : {
-        regex : /\$footer([\W\w]+?)(?:\s*?(-img [^\s]+?))?\s*?\$(?:end)?/gm,
-        toJSON : match => ({
-            text : first(match),
-            icon_url : match[0] ? (match[0].join("").includes("-img") ? match[0][2].replace("-img","").trim() : null) : null
-        }),
-        filter : e => (
-            large(e.text) &&
-            (e.icon_url == null || URL(e.icon_url))
-        )
+    'image' : {
+        args : ['img'],
+        method : 'setImage'
     },
-    thumbnail : {
-        regex : /\$(?:thumbnail|logo|thumb)([\W\w]+?)\$(?:end)?/gm,
-        toJSON : first,
-        filter : URL
+    'thumbnail' : {
+        args : ['img'],
+        method : 'setThumbnail'
     },
-    image : {
-        regex : /\$image([\W\w]+?)\$(?:end)?/gm,
-        toJSON : first,
-        filter : URL
+    'field' : {
+        args : ['256','1024','?inline'],
+        method : 'addField'
     },
-    author : {
-        regex : /\$author([\W\w]+?)(?:\s*?(-(?:url|link|img) [^\s]+?))?(?:\s*?(-(?:url|link|img) [^\s]+?))?\s*?\$(?:end)?/gm,
-        toJSON : match => ({
-            name : first(match),
-            url : match[0] ? (match[0][0].includes("-url") ? match[0].slice(1).find(e => e.includes("-url")).replace("-url","").trim() : null) : null,
-            icon_url : match[0] ? (match[0][0].includes("-img") ? match[0].slice(1).find(e => e.includes("-img")).replace("-img","").trim() : null) : null
-        }),
-        filter : e => (
-            small(e.name) &&
-            (e.url == null || URL(e.url)) &&
-            (e.icon_url == null || URL(e.icon_url))
-        )
+    'timestamp' : {
+        args : ['date'],
+        method : 'setTimestamp',
     },
-    fields : {
-        regex : /\$field([\w\W]+?)\n([\W\w]+?)\$(?:end)?/g,
-        toJSON : match => match.map(field => ({
-            name : field[1].trim(),
-            value : field[2].replace(/\-inline/gm,"").trim(),
-            inline : field[2].includes("-inline")
-        })),
-        filter : fields => fields.every(field => (
-            small(field.name) && large(field.value)
-        ))
+    'color' : {
+        args : ['color'],
+        method : 'setColor'
     }
+}
+
+// Texte de la regex globale
+const regexString = `(?:\s|^)\$@tag\s+([\w\W]*?)\s+\$(?:end|${Object.keys(tags).join('|')})(?:\s|$)`
+
+// Exportation
+module.exports = {
+    regexString : regexString,
+    processors : processors,
+    tags : tags
 }
