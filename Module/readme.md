@@ -27,7 +27,7 @@ npm i godembed
 You can use Discord to test this module by doing the following :
 
 ```js
-const godEmbed = require("godembed")
+const toEmbed = require( "godembed" )
 
 client.on( "message", message => {
 
