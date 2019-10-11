@@ -31,7 +31,7 @@ const godEmbed = require("godembed")
 
 client.on( "message", message => {
 
-    if( !message.system && message.channel ) return
+    if( !message.system || !message.channel ) return
 
     if( message.content.startsWith( 'godembed' ) ){
 
@@ -133,4 +133,4 @@ https://cdn.discordapp.com/embed/avatars/0.png
 
 ![Result](https://cdn.discordapp.com/attachments/609313381421154304/619976933383602214/unknown.png)
 
-![## Join Discord server support 😄](https://discord.gg/3vC2XWK)
+# ![Join Discord server support 😄](https://discord.gg/3vC2XWK)
