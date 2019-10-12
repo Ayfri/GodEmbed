@@ -63,9 +63,9 @@ $title My isolated Title $end
 #### Syntax
 
 $author 
-*<a href="#256">name</a>* \[<a href="#and">$and<a>]
-\[*<a href="#img">image</a>*] \[<a href="#and">$and<a>]
-\[*<a href="#url-type">url</a>*] \[<a href="#end">$end<a>]
+*<a href="#256">name</a>* \[<a href="#and">$and<a>]  
+\[*<a href="#img">image</a>*] \[<a href="#and">$and<a>]  
+\[*<a href="#url-type">url</a>*] \[<a href="#end">$end<a>]  
 
 #### Examples
 
@@ -132,8 +132,8 @@ $title My isolated Description $end
 #### Syntax
 
 $footer 
-*<a href="#2048">text</a>* \[<a href="#and">$and<a>]
-\[*<a href="#img">image</a>*] \[<a href="#end">$end<a>]
+*<a href="#2048">text</a>* \[<a href="#and">$and<a>]  
+\[*<a href="#img">image</a>*] \[<a href="#end">$end<a>]  
 
 #### Examples
 
@@ -242,9 +242,9 @@ $thumbnail http://www.website.com/image.png $end
 #### Syntax
 
 $field 
-*<a href="#256">name</a>* \[<a href="#and">$and<a>]
-*<a href="#1024">value</a>* \[<a href="#and">$and<a>]
-\[<a href="#bool">inline<a>] \[<a href="#end">$end<a>]
+*<a href="#256">name</a>* \[<a href="#and">$and<a>]  
+*<a href="#1024">value</a>* \[<a href="#and">$and<a>]  
+\[<a href="#bool">inline<a>] \[<a href="#end">$end<a>]  
 
 #### Examples
 
