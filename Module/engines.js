@@ -3,14 +3,14 @@ const moment = require('moment')
 
 // Moteur de test et de conversion des arguments
 const processors = {
-    'inline' : arg => /\$inline/i.test(arg),
-    'url' : arg => /(https?:\/\/(?:www\.|(?!www))[a-z\d][a-z\d-]+[a-z\d]\.[^\s]{2,}|www\.[a-z\d][a-z\d-]+[a-z\d]\.[^\s]{2,}|https?:\/\/(?:www\.|(?!www))[a-z\d]+\.[^\s]{2,}|www\.[a-z\d]+\.[^\s]{2,})/i.test(arg) ? arg : false,
-    'img' : arg => /\S+\.(?:jpg|jpeg|gif|png|bmp|webp)/i.test(arg) ? arg : false,
-    '2048' : arg => arg.length > 0 && arg.length <= 2048 ? arg : false,
-    '1024' : arg => arg.length > 0 && arg.length <= 1024 ? arg : false,
-    '256' : arg => arg.length > 0 && arg.length <= 256 ? arg : false,
-    'date' : arg => /now/i.test(arg) ? Date.now() : moment(arg).isValid() ? moment(arg).valueOf() : Date.now(),
-    'color' : arg => /(?:(?:0x){0,1}|#{0,1})(?:[0-9A-F]{8}|[0-9A-F]{6})/i.test(arg) ? arg.startsWith('#') ? arg : Number(arg) : false
+    'bool' : arg => /(?:true|false)/i.test(arg) ? /true/i.test(arg) : 'invalid',
+    'url' : arg => /(?:https?:\/\/(?:www\.|(?!www))[a-z\d][a-z\d-]+[a-z\d]\.[^\s]{2,}|www\.[a-z\d][a-z\d-]+[a-z\d]\.[^\s]{2,}|https?:\/\/(?:www\.|(?!www))[a-z\d]+\.[^\s]{2,}|www\.[a-z\d]+\.[^\s]{2,})/i.test(arg) ? arg : 'invalid',
+    'img' : arg => /\S+\.(?:jpg|jpeg|gif|png|bmp|webp)/i.test(arg) ? arg : 'invalid',
+    '2048' : arg => arg.length > 0 ? arg.slice(0,2048) : 'invalid',
+    '1024' : arg => arg.length > 0 ? arg.slice(0,1024) : 'invalid',
+    '256' : arg => arg.length > 0 ? arg.slice(0,256) : 'invalid',
+    'date' : arg => /now/i.test(arg) ? Date.now() : !isNaN(Number(arg)) ? moment(Number(arg)).isValid() ? Number(arg) : 'invalid' : moment(arg).isValid() ? moment(arg).valueOf() : 'invalid',
+    'color' : arg => /(?:(?:0x){0,1}|#{0,1})(?:[0-9A-F]{8}|[0-9A-F]{6})/i.test(arg) ? arg.startsWith('#') ? arg : Number(arg) : 'invalid'
 }
 
 // Règlement des balises

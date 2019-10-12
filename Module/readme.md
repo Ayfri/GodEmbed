@@ -1,7 +1,9 @@
 
 # 🕇 GodEmbed 🕇
 
-Create a Discord RichEmbed from a GodEmbed text to use for "embed say" commands of your bots.  
+Create a Discord RichEmbed from a GodEmbed text.  
+To use for "embed say" commands of your bot.  
+Go to <a href="https://github.com/CamilleAbella/GodEmbed/blob/master/Module/docs.md">documentation</a> for details about usage.
 
 ### Example
 

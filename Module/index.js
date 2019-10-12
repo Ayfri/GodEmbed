@@ -34,7 +34,7 @@ function toEmbed( string ){
                 if( andTagRegex.test( content ) ){
                     contentArgs = content.split( andTagRegex )
                 }else{
-                    contentArgs = content.split( /[\r\n]+/ )
+                    contentArgs = content.split( /\s*[\r\n]+\s*/ )
                 }
             }
 
@@ -50,11 +50,11 @@ function toEmbed( string ){
                 const type = types[ index ]
                 const processor = processors[ type ]
 
-                // Isoler l'argument et le convertir
-                const valid = processor( arg )
+                // Convertir l'argument
+                const valid = /^\$null$/i.test( arg.trim() ) ? null : processor( arg.trim() )
 
                 // Si l'argument est valide
-                if( valid ){
+                if( valid !== 'invalid' ){
                     // Ajouter l'argument converti dans l'array
                     valids.push( valid )
                     logArgs.push( type + ' ✅' )
