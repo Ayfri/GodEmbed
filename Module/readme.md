@@ -36,11 +36,13 @@ client.on( "message", message => {
     if( message.content.startsWith( 'godembed' ) ){
 
         const input = message.content.replace( 'godembed', '' )
-
         const { output, errors } = toEmbed( input )
 
-        message.channel.send( errors.length > 0 ? errors.join('\n') : 'it works !' )
         message.channel.send( output )
+
+        if( errors.length > 0 ){
+            message.channel.send( errors.join('\n') )
+        }
     }
 })
 ```
@@ -110,15 +112,21 @@ $timestamp now
     Here is the structure of a field :
 
         $field_tag field_name
-        multi_lines_text
+        [$and_tag]
+        field_text
         [$inline_tag]
         [$end_tag]
 
-$field Titre du premier field
+    The "and" tags are needed to separate multiline arguments, 
+    for example the "name" of a field and its multiline "text".
+
+    You can also write it like this: $&.
+
+$field Titre du premier field &and
 Texte du premier field
 $inline
 
-$field Titre du second field 
+$field Titre du second field
 Texte du second field
 $end
 

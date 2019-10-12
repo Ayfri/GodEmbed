@@ -13,18 +13,6 @@ const processors = {
     'color' : arg => /(?:(?:0x){0,1}|#{0,1})(?:[0-9A-F]{8}|[0-9A-F]{6})/i.test(arg) ? arg.startsWith('#') ? arg : Number(arg) : false
 }
 
-// TODO: moteurs d'isolation d'un élément en partant de la fin de l'input
-const isolations = {
-    'inline' : input => null,
-    'url' : input => null,
-    'img' : input => null,
-    '2048' : input => null,
-    '1024' : input => null,
-    '256' : input => null,
-    'date' : input => null,
-    'color' : input => null
-}
-
 // Règlement des balises
 const tags = {
     'title' : {
