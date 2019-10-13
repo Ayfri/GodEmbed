@@ -14,7 +14,7 @@ function toEmbed( string ){
 
         const { args, method } = tags[ tag ]
         const types = args.map( arg => arg.replace( '?', '' ) )
-        const regex = new RegExp( regexString.replace( '@tag', tag ), 'i' )
+        const regex = new RegExp( regexString.replace( '@tag', tag ), 'im' )
         
         // Pour chaque occurence de cette balise
         while( regex.test( source ) ){
@@ -26,14 +26,13 @@ function toEmbed( string ){
             let [ fullmatch, content ] = regex.exec( source )
 
             // Effacer la balise traitée de "source"
-            source = source.replace( new RegExp( `(?:^|\\s)\\$${tag}(?:$|\\s)`, 'i' ), '$end' )
+            source = source.replace( new RegExp( `(?:^|\\s)\\$${tag}(?:$|\\s)`, 'i' ), ' $end ' )
             content = content.trim()
 
             if( args.length == 1 ){
                 argContents = [ content ]
             }else{
                 if( andTagRegex.test( content ) ){
-                    console.log('test:',andTagRegex)
                     argContents = content.split( andTagRegex )
                 }else{
                     argContents = content.split( /\s*[\r\n]+\s*/ )
