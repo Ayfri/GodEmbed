@@ -15,50 +15,50 @@ const processors = {
 
 // Règlement des balises
 const tags = {
-    'title' : {
+    title : {
         args : ['256'],
         method : 'setTitle'
     },
-    'author' : {
+    author : {
         args : ['256','?img','?url'],
         method : 'setAuthor'
     },
-    'description' : {
+    description : {
         args : ['2048'],
         method : 'setDescription'
     },
-    'footer' : {
+    footer : {
         args : ['2048','?img'],
         method : 'setFooter'
     },
-    'url' : {
+    url : {
         args : ['url'],
         method : 'setURL'
     },
-    'image' : {
+    image : {
         args : ['img'],
         method : 'setImage'
     },
-    'thumbnail' : {
+    thumbnail : {
         args : ['img'],
         method : 'setThumbnail'
     },
-    'field' : {
-        args : ['256','1024','?inline'],
+    field : {
+        args : ['256','1024','?bool'],
         method : 'addField'
     },
-    'timestamp' : {
+    timestamp : {
         args : ['date'],
         method : 'setTimestamp',
     },
-    'color' : {
+    color : {
         args : ['color'],
         method : 'setColor'
     }
 }
 
 // Texte de la regex globale
-const regexString = `(?:\s|^)\$@tag\s+([\w\W]*?)\s+\$(?:end|${Object.keys(tags).join('|')})(?:\s|$)`
+const regexString = `(?:\\s|^)\\$@tag\\s+([\\w\\W]*?)\\s+\\$(?:end|${Object.keys(tags).join('|')})(?:\\s|$)`
 
 // Exportation
 module.exports = {

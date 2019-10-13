@@ -1,5 +1,5 @@
 
-const { processors, tags, regexString } = require(  "./engines.js" )
+const { processors, tags, regexString } = require( "./engines.js" )
 const { RichEmbed } = require( "discord.js" )
 
 function toEmbed( string ){
@@ -12,63 +12,70 @@ function toEmbed( string ){
     // Pour chaque balise existente
     for( tag in tags ){
 
-        const [ args, method ] = tags[ tag ]
-        const regex = new RegExp( regexString.replace( '@tag', tag ), 'i' )
+        const { args, method } = tags[ tag ]
         const types = args.map( arg => arg.replace( '?', '' ) )
+        const regex = new RegExp( regexString.replace( '@tag', tag ), 'i' )
         
         // Pour chaque occurence de cette balise
         while( regex.test( source ) ){
             
-            let contentArgs
+            let argContents
             const logArgs = []
             const valids = []
-            const [ fullmatch, content ] = regex.exec( source )
             const andTagRegex = /\s+\$(?:and|&)\s+/i
+            let [ fullmatch, content ] = regex.exec( source )
 
-            source = source.replace( '$' + tag, '' )
+            source = source.replace( '$' + tag, '$end' )
             content = content.trim()
 
             if( args.length == 1 ){
-                contentArgs = [ content ]
+                argContents = [ content ]
             }else{
                 if( andTagRegex.test( content ) ){
-                    contentArgs = content.split( andTagRegex )
+                    console.log('test:',andTagRegex)
+                    argContents = content.split( andTagRegex )
                 }else{
-                    contentArgs = content.split( /\s*[\r\n]+\s*/ )
+                    argContents = content.split( /\s*[\r\n]+\s*/ )
                 }
             }
 
             delete fullmatch
             delete content
 
-            // Pour chaque argument trouvé dans le contenu
-            contentArgs.forEach(( arg, index ) => {
+            // Pour chaque argument demandé par la méthode
+            types.forEach(( type, index ) => {
 
-                // Si l'argument est en trop : return
-                if( index >= args.length ) return
+                const fullArg = args[ index ]
+                let arg = argContents[ index ]
 
-                const type = types[ index ]
-                const processor = processors[ type ]
+                // Si l'argument n'est pas null ou "null"
+                if( arg && !/^\$null$/i.test( arg ) ){
 
-                // Convertir l'argument
-                const valid = /^\$null$/i.test( arg.trim() ) ? null : processor( arg.trim() )
+                    // Convertir l'argument
+                    const valid = processors[ type ]( arg )
 
-                // Si l'argument est valide
-                if( valid !== 'invalid' ){
-                    // Ajouter l'argument converti dans l'array
-                    valids.push( valid )
-                    logArgs.push( type + ' ✅' )
-
-                // Sinon si l'argument n'est pas optionnel
-                }else if( !arg.startsWith('?') ){
-                    logArgs.push( type + ' ❓' )
+                    // Injection de validité
+                    if( valid === 'invalid' ){
+                        logArgs.push( 'invalid: ' + type )
+                    }else{
+                        logArgs.push( 'valid: ' + type )
+                        valids[ index ] = valid
+                    }
                 }else{
-                    logArgs.push( type + ' ❔' )
+
+                    // Injection de nullité
+                    if( fullArg.startsWith( '?' ) ){
+                        logArgs.push( 'omit: ' + type )
+                        valids[ index ] = null
+                    }else{
+                        logArgs.push( 'forget: ' + type )
+                        valids[ index ] = 'GodArgumentError'
+                    }
                 }
             })
 
             // Si les arguments obligatoires sont présents
-            if( valids.length > args.filter( arg => !arg.startsWith( '?' ) ).length ){
+            if( !valids.find(( arg ) => arg === 'GodArgumentError') ){
                 // Ajouter les arguments à l'embed
                 output[ method ]( ...valids )
 
@@ -81,7 +88,7 @@ function toEmbed( string ){
     }
 
     return {
-        output : output,
+        embed : embed,
         errors : errors
     }
 }

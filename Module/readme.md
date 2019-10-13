@@ -24,9 +24,7 @@ You obtain :
 npm i godembed
 ```
 
-## Use with Discord
-
-You can use Discord to test this module by doing the following :
+## Usage
 
 ```js
 const toEmbed = require( "godembed" )
@@ -38,43 +36,36 @@ client.on( "message", message => {
     if( message.content.startsWith( 'godembed' ) ){
 
         const input = message.content.replace( 'godembed', '' )
-        const { output, errors } = toEmbed( input )
+        const { embed, errors } = toEmbed( input )
+        // Or const output = toEmbed( input )
 
-        message.channel.send( output )
+        message.channel.send( embed )
+        // Or message.channel.send( output.embed )
 
         if( errors.length > 0 ){
             message.channel.send( errors.join('\n') )
         }
+        // Or
+        // if( output.errors.length > 0 ){
+        //     message.channel.send( output.errors.join('\n') )
+        // }
     }
 })
 ```
 
-## Use GodEmbed langage
-
-All parts of a RichEmbed are definable from the GodEmbed language.  
-
-### Documentation / Usage / Example
+## Little Text Example
 
 ```
     Hey ! I'm a COMMENT in GodEmbed file (file.ge) because 
-    I'm not between an opening tag and a closing tag \o/ 
+    I'm not between an opening tag and a closing tag/keyword \o/ 
     (my indentation is conventional)
-
-    The "author" tag takes three arguments, two of which is optional :
-
-        $author_tag author_name
-        [image_url]
-        [onclic_url]
-        [$end_tag]
-
-    Like this :
 
 $author Ghom Krosmonaute 
 https://cdn.discordapp.com/embed/avatars/0.png  
 https://discordapp.com  
 $end 
 
-    The "end" tags are not mandatory but notament 
+    The "end" keywords are not mandatory but notament 
     recommended to be able to comment between two elements.
 
     As for example for this title :
@@ -109,30 +100,22 @@ $color 0xFF0000 $end
     or with a date recognized by Moment.js but 
     it can also be defined with "now" as above.
 
-$timestamp now
+$timestamp now $end
 
-    Here is the structure of a field :
-
-        $field_tag field_name
-        [$and_tag]
-        field_text
-        [$inline_tag]
-        [$end_tag]
-
-    The "and" tags are needed to separate multiline arguments, 
+    The "and" keywords are needed to separate multiline arguments, 
     for example the "name" of a field and its multiline "text".
 
     You can also write it like this: $&.
 
-$field Titre du premier field &and
+$field Titre du premier field $and
 Texte du premier field
-$inline
+false
 
 $field Titre du second field
 Texte du second field
 $end
 
-    At the end of the file, it is optional to add an "end" tag 
+    At the end of the file, it is optional to add an "end" keyword 
     because it is added automatically by the GodEmbed module.
 
 $footer Texte du footer 
@@ -143,4 +126,7 @@ https://cdn.discordapp.com/embed/avatars/0.png
 
 ![Result](https://cdn.discordapp.com/attachments/609313381421154304/619976933383602214/unknown.png)
 
-# ![Join Discord server support 😄](https://discord.gg/3vC2XWK)
+# Links
+
+- [Check the GodEmbed documentation](https://github.com/CamilleAbella/GodEmbed/blob/master/Module/docs.md)
+- [Join Discord server support 😄](https://discord.gg/3vC2XWK)
