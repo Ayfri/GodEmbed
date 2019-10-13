@@ -6,7 +6,7 @@ function toEmbed( string ){
 
     let source = string + '\n$end'
     
-    const output = new RichEmbed()
+    const embed = new RichEmbed()
     const errors = []
 
     // Pour chaque balise existente
@@ -77,7 +77,7 @@ function toEmbed( string ){
             // Si les arguments obligatoires sont présents
             if( !valids.find(( arg ) => arg === 'GodArgumentError') ){
                 // Ajouter les arguments à l'embed
-                output[ method ]( ...valids )
+                embed[ method ]( ...valids )
 
             // Sinon
             }else{
