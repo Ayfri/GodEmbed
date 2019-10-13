@@ -1,6 +1,6 @@
 {
   "name": "godembed",
-  "version": "1.0.1",
+  "version": "1.0.3",
   "description": "Create a Discord RichEmbed from a GodEmbed text to use for \"embed say\" commands of your bots.",
   "main": "index.js",
   "scripts": {

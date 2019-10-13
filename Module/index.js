@@ -4,7 +4,7 @@ const { RichEmbed } = require( "discord.js" )
 
 function toEmbed( string ){
 
-    let source = string + '\n$end'
+    let source = string.replace( /[^:]\$blank/ig, '\u200B' ) + '\n$end'
     
     const embed = new RichEmbed()
     const errors = []
@@ -25,7 +25,8 @@ function toEmbed( string ){
             const andTagRegex = /\s+\$(?:and|&)\s+/i
             let [ fullmatch, content ] = regex.exec( source )
 
-            source = source.replace( '$' + tag, '$end' )
+            // Effacer la balise traitée de "source"
+            source = source.replace( new RegExp( `(?:^|\\s)\\$${tag}(?:$|\\s)`, 'i' ), '$end' )
             content = content.trim()
 
             if( args.length == 1 ){

@@ -15,6 +15,7 @@
     - <a href="#color-tag">$color</a>
 - <a href="#keywords">Keywords</a>
     - <a href="#and">$and</a>
+    - <a href="#blank">$blank</a>
     - <a href="#null">$null</a>
     - <a href="#end">$end</a>
 - <a href="#types">Types</a>
@@ -355,6 +356,20 @@ multiline
 arg 
 
 $and arg
+```
+
+<a name="blank"></a>
+
+### Key $blank
+
+#### Usage
+
+The $blank keyword is used to define an accepted void text, like RichEmbed#addBlankField.
+
+#### Example
+
+```
+$tag $blank $and arg
 ```
 
 <a name="null"></a>
