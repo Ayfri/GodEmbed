@@ -1,6 +1,5 @@
 const dayjs = require('dayjs');
 
-// Moteur de test et de conversion des arguments
 const processors = {
 	'bool':  arg => /(?:true|false)/i.test(arg) ? /true/i.test(arg) : 'invalid',
 	'url':   arg => /(?:https?:\/\/(?:www\.|(?!www))[a-z\d][a-z\d-]+[a-z\d]\.[^\s]{2,}|www\.[a-z\d][a-z\d-]+[a-z\d]\.[^\s]{2,}|https?:\/\/(?:www\.|(?!www))[a-z\d]+\.[^\s]{2,}|www\.[a-z\d]+\.[^\s]{2,})/i.test(arg) ?
@@ -14,7 +13,6 @@ const processors = {
 	'color': arg => /(?:(?:0x)?|#?)(?:[0-9A-F]{8}|[0-9A-F]{6})/i.test(arg) ? arg.startsWith('#') ? arg : Number(arg) : 'invalid',
 };
 
-// Règlement des balises
 const tags = {
 	title:       {
 		args:   ['256'],
@@ -58,12 +56,10 @@ const tags = {
 	},
 };
 
-// Texte de la regex globale
 const regexString = `(?:\\s|^)\\$@tag\\s+([\\w\\W]*?)\\s+\\$(?:end|${Object.keys(tags).join('|')})(?:\\s|$)`;
 
-// Exportation
 module.exports = {
-	regexString: regexString,
-	processors:  processors,
-	tags:        tags,
+	regexString,
+	processors,
+	tags,
 };

@@ -6,11 +6,11 @@ const {
 const {MessageEmbed} = require('discord.js');
 
 module.exports = function toEmbed(string) {
-	let source = string.replace(/[^:]\$blank/ig, '\u200B') + '\n$end';
 	const embed = new MessageEmbed();
 	const errors = [];
+	let source = string.replace(/[^:]\$blank/ig, '\u200B') + '\n$end';
 	
-	for (let tag in tags) {
+	for (const tag in tags) {
 		const {
 			args,
 			method,
@@ -55,4 +55,4 @@ module.exports = function toEmbed(string) {
 		embed,
 		errors,
 	};
-}
+};
